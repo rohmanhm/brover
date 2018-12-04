@@ -1,5 +1,7 @@
 # Brover
 
 ## Status
-This package still in **development** mode.
+
+Under **development**.
+
 Test Coverage 100%
