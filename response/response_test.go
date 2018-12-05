@@ -15,32 +15,22 @@
 package response_test
 
 import (
-	"net/http"
 	"testing"
 
-	"github.com/kataras/iris"
 	"github.com/kataras/iris/httptest"
-	"github.com/rohmanhm/brover/response"
+	"github.com/rohmanhm/brover/response/fixtures"
 )
 
-func SetupServer() *iris.Application {
-	app := iris.New()
-	app.Get("/test-response", func(ctx iris.Context) {
-		r := response.NewIrisResponse(ctx)
-		r.StatusCode(http.StatusOK).Data([]string{
-			"foo",
-			"bar",
-		})
-
-		r.Render()
-		return
-	})
-
-	return app
-}
-
-func TestResponse(t *testing.T) {
-	app := SetupServer()
+func TestIrisResponse(t *testing.T) {
+	app := fixtures.SetupIrisServer()
 	e := httptest.New(t, app)
-	e.GET("/test-response").Expect().Status(httptest.StatusOK).Body().NotEmpty()
+
+	e.GET(fixtures.RouteText(fixtures.RouteTestResponse)).
+		Expect().Status(httptest.StatusOK).Body().NotEmpty()
+
+	e.GET(fixtures.RouteText(fixtures.RouteTestResponseError)).
+		Expect().Status(httptest.StatusBadRequest).Body().NotEmpty()
+
+	e.GET(fixtures.RouteText(fixtures.RouteTestResponseNotFound)).
+		Expect().Status(httptest.StatusNotFound).Body().NotEmpty()
 }

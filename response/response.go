@@ -15,11 +15,12 @@
 // Package response provides response utilities
 package response
 
+import "net/http"
+
 // Response JSON
 type Response struct {
-	DataValue interface{} `json:"data,omitempty"`
-	Errors    *Errors     `json:"errors,omitempty"`
-
+	DataValue       interface{} `json:"data,omitempty"`
+	ErrorsValue     *Errors     `json:"errors,omitempty"`
 	StatusCodeValue int         `json:"-"`
 	Context         interface{} `json:"-"`
 }
@@ -31,6 +32,10 @@ type Errors struct {
 
 // Data Response
 func (r *Response) Data(data interface{}) *Response {
+	if r.StatusCodeValue == 0 {
+		r.StatusCode(http.StatusOK)
+	}
+
 	r.DataValue = data
 	return r
 }
@@ -38,6 +43,25 @@ func (r *Response) Data(data interface{}) *Response {
 // StatusCode Response
 func (r *Response) StatusCode(code int) *Response {
 	r.StatusCodeValue = code
+	return r
+}
+
+// Errors Response value
+func (r *Response) Errors(err *Errors) *Response {
+	if r.StatusCodeValue == 0 {
+		r.StatusCode(http.StatusBadRequest)
+	}
+
+	r.ErrorsValue = err
+	return r
+}
+
+// ErrorsMessage Response value
+func (r *Response) ErrorsMessage(msg string) *Response {
+	if r.ErrorsValue != nil {
+		r.ErrorsValue.Message = msg
+	}
+
 	return r
 }
 

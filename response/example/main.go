@@ -15,28 +15,11 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/kataras/iris"
-	"github.com/rohmanhm/brover/response"
+	"github.com/rohmanhm/brover/response/fixtures"
 )
 
 func main() {
-	s := setupServer()
+	s := fixtures.SetupIrisServer()
 	s.Run(iris.Addr(":8080"))
-}
-
-func setupServer() *iris.Application {
-	app := iris.Default()
-	app.Get("/ping", func(ctx iris.Context) {
-		r := response.NewIrisResponse(ctx)
-		r.StatusCode(http.StatusOK).Data([]string{
-			"foo",
-			"bar",
-		})
-		r.Render()
-		return
-	})
-
-	return app
 }
