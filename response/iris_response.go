@@ -20,7 +20,7 @@ import (
 
 // IrisResponse type
 type IrisResponse struct {
-	Response
+	Default
 
 	Context iris.Context `json:"-"`
 }
