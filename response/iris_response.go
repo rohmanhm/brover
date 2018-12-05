@@ -25,8 +25,8 @@ type IrisResponse struct {
 	Context iris.Context `json:"-"`
 }
 
-// NewIrisResponse with context
-func NewIrisResponse(ctx iris.Context) *IrisResponse {
+// NewIris with context
+func NewIris(ctx iris.Context) *IrisResponse {
 	return &IrisResponse{
 		Context: ctx,
 	}

@@ -11,7 +11,7 @@ import (
 func SetupIrisServer() *iris.Application {
 	app := iris.New()
 	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) {
-		r := response.NewIrisResponse(ctx)
+		r := response.NewIris(ctx)
 		r.Errors(&response.Errors{
 			Message: "route not found",
 		}).StatusCode(http.StatusNotFound)
@@ -19,7 +19,7 @@ func SetupIrisServer() *iris.Application {
 		r.Render()
 	})
 	app.Get(RouteText(RouteTestResponse), func(ctx iris.Context) {
-		r := response.NewIrisResponse(ctx)
+		r := response.NewIris(ctx)
 		r.Data([]string{
 			"foo",
 			"bar",
@@ -28,7 +28,7 @@ func SetupIrisServer() *iris.Application {
 		r.Render()
 	})
 	app.Get(RouteText(RouteTestResponseError), func(ctx iris.Context) {
-		r := response.NewIrisResponse(ctx)
+		r := response.NewIris(ctx)
 		r.Errors(&response.Errors{
 			Message: "error message",
 		})
