@@ -15,11 +15,8 @@
 package main
 
 import (
-	"github.com/kataras/iris"
-	"github.com/rohmanhm/brover/response/fixtures"
+	_ "github.com/rohmanhm/brover/response/fixtures"
 )
 
 func main() {
-	s := fixtures.SetupIrisServer()
-	s.Run(iris.Addr(":8080"))
 }

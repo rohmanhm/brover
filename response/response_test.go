@@ -15,22 +15,7 @@
 package response_test
 
 import (
-	"testing"
+	_ "testing"
 
-	"github.com/kataras/iris/httptest"
-	"github.com/rohmanhm/brover/response/fixtures"
+	_ "github.com/rohmanhm/brover/response/fixtures"
 )
-
-func TestIrisResponse(t *testing.T) {
-	app := fixtures.SetupIrisServer()
-	e := httptest.New(t, app)
-
-	e.GET(fixtures.RouteText(fixtures.RouteTestResponse)).
-		Expect().Status(httptest.StatusOK).Body().NotEmpty()
-
-	e.GET(fixtures.RouteText(fixtures.RouteTestResponseError)).
-		Expect().Status(httptest.StatusBadRequest).Body().NotEmpty()
-
-	e.GET(fixtures.RouteText(fixtures.RouteTestResponseNotFound)).
-		Expect().Status(httptest.StatusNotFound).Body().NotEmpty()
-}
