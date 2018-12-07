@@ -15,8 +15,20 @@
 package main
 
 import (
-	_ "github.com/rohmanhm/brover/response/fixtures"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/rohmanhm/brover/response/fixtures"
 )
 
 func main() {
+	server := fixtures.SetupServer()
+	server.Addr = ":8080"
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("could not run server on port %s: %v", server.Addr, err)
+		os.Exit(2)
+	}
+
+	fmt.Printf("server running on: http://localhost/%s\n", server.Addr)
 }

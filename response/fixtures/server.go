@@ -12,31 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package response_test
+package fixtures
 
 import (
-	"testing"
+	"net/http"
 
 	"github.com/rohmanhm/brover/response"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestResponse(t *testing.T) {
-	t.Run("good response", func(t *testing.T) {
-		resp := response.New()
-		resp.Data([]string{
-			"banana",
-			"apple",
-		})
-		expected := `{"data":["banana","apple"]}`
-		assert.Equal(t, expected, resp.String())
-	})
-	t.Run("bad response", func(t *testing.T) {
-		resp := response.New()
-		resp.Errors(&response.Errors{
-			Message: "bad response",
-		})
-		expected := `{"errors":{"message":"bad response"}}`
-		assert.Equal(t, expected, resp.String())
-	})
+// Mux custom server
+type Mux struct {
+	http.ServeMux
+}
+
+func (c *Mux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var current http.Handler = &c.ServeMux
+	current.ServeHTTP(w, r)
+}
+
+// SetupServer default
+func SetupServer() *http.Server {
+	mux := &Mux{}
+	mux.HandleFunc(RouteText(RouteTestResponse), handleTestResponse)
+
+	server := &http.Server{}
+	server.Handler = mux
+
+	return server
+}
+
+func handleTestResponse(w http.ResponseWriter, r *http.Request) {
+	result := response.New()
+	result.Data([]string{
+		"banana",
+		"apple",
+	}).
+		Render(w)
 }

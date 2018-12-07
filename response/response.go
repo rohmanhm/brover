@@ -15,7 +15,10 @@
 // Package response provides response utilities
 package response
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 // Response JSON
 type Response struct {
@@ -33,6 +36,12 @@ type Errors struct {
 // New default response
 func New() *Response {
 	return &Response{}
+}
+
+// String the response
+func (r *Response) String() string {
+	b, _ := json.Marshal(r)
+	return string(b)
 }
 
 // Data Response
@@ -71,6 +80,6 @@ func (r *Response) ErrorsMessage(msg string) *Response {
 }
 
 // Render let user custom their own renders
-// func (r *Response) Render() *Response {
-// 	return nil
-// }
+func (r *Response) Render(w http.ResponseWriter) {
+	json.NewEncoder(w).Encode(r)
+}
