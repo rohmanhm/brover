@@ -17,8 +17,8 @@ package response
 
 import "net/http"
 
-// Default JSON
-type Default struct {
+// Response JSON
+type Response struct {
 	DataValue       interface{} `json:"data,omitempty"`
 	ErrorsValue     *Errors     `json:"errors,omitempty"`
 	StatusCodeValue int         `json:"-"`
@@ -31,12 +31,12 @@ type Errors struct {
 }
 
 // New default response
-func New() *Default {
-	return &Default{}
+func New() *Response {
+	return &Response{}
 }
 
-// Data Default
-func (r *Default) Data(data interface{}) *Default {
+// Data Response
+func (r *Response) Data(data interface{}) *Response {
 	if r.StatusCodeValue == 0 {
 		r.StatusCode(http.StatusOK)
 	}
@@ -45,14 +45,14 @@ func (r *Default) Data(data interface{}) *Default {
 	return r
 }
 
-// StatusCode Default
-func (r *Default) StatusCode(code int) *Default {
+// StatusCode Response
+func (r *Response) StatusCode(code int) *Response {
 	r.StatusCodeValue = code
 	return r
 }
 
-// Errors Default value
-func (r *Default) Errors(err *Errors) *Default {
+// Errors Response value
+func (r *Response) Errors(err *Errors) *Response {
 	if r.StatusCodeValue == 0 {
 		r.StatusCode(http.StatusBadRequest)
 	}
@@ -61,8 +61,8 @@ func (r *Default) Errors(err *Errors) *Default {
 	return r
 }
 
-// ErrorsMessage Default value
-func (r *Default) ErrorsMessage(msg string) *Default {
+// ErrorsMessage Response value
+func (r *Response) ErrorsMessage(msg string) *Response {
 	if r.ErrorsValue != nil {
 		r.ErrorsValue.Message = msg
 	}
@@ -71,6 +71,6 @@ func (r *Default) ErrorsMessage(msg string) *Default {
 }
 
 // Render let user custom their own renders
-// func (r *Default) Render() *Default {
+// func (r *Response) Render() *Response {
 // 	return nil
 // }

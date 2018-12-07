@@ -18,22 +18,22 @@ import (
 	"github.com/kataras/iris"
 )
 
-// IrisResponse type
-type IrisResponse struct {
-	Default
+// Iris type
+type Iris struct {
+	Response
 
 	Context iris.Context `json:"-"`
 }
 
 // NewIris with context
-func NewIris(ctx iris.Context) *IrisResponse {
-	return &IrisResponse{
+func NewIris(ctx iris.Context) *Iris {
+	return &Iris{
 		Context: ctx,
 	}
 }
 
 // Render for iris webapp
-func (r *IrisResponse) Render() *IrisResponse {
+func (r *Iris) Render() *Iris {
 	r.Context.StatusCode(r.StatusCodeValue)
 	r.Context.JSON(r)
 
